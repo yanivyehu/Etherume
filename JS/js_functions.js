@@ -20,10 +20,34 @@ function initContract(from, contractHex, gas) {
       console.log("tx:" + tx);
     }
   );
+  smartMine();
 }
 
 function getContractCode(contractAddress) {
   return eth.getCode(contractAddress);
+};
+
+/**
+  After submit of the contract to the blockchain we got an address of the contract.
+  we use this togheter with abi file to create a javascript proxy object to
+  invoke methods of the contract.
+  Usage example:
+  var conObj = ethNodeAPI.getJsObjToContract(abiObj,"0xc8f90187592312546Aa283ecA0C4Ac4E301fd14C");
+**/
+function getJsObjToContract(abiObj, contractAdress) {
+    var contractClass = eth.contract(abiObj); //create javascript contract "class" from the specific contract structure
+    //we need to know where in the blockchain this instance lives
+    var createJsProxyObjToContract = contractClass.at(contractAdress);
+    console.log(createJsProxyObjToContract);
+    return createJsProxyObjToContract;
+};
+
+/**
+**/
+function invokeMehtodOnContract(from, jsProxyObj, methodName) {
+  personal.unlockAccount(from);
+  jsProxyObj[methodName].sendTransaction({from : from});
+  smartMine();
 }
 
 /**
@@ -44,6 +68,7 @@ function sendTransaction(from, to, amount, gas) {
       console.log("tx:" + tx);
     }
   );
+  smartMine();
 };
 
 function smartMine() {
@@ -58,10 +83,12 @@ function smartMine() {
 //Public API
 
 return {
-  initContract    : initContract,
-  getContractCode : getContractCode
-  sendTransaction : sendTransaction,
-  smartMine       : smartMine
+  initContract          : initContract,
+  getContractCode       : getContractCode
+  sendTransaction       : sendTransaction,
+  smartMine             : smartMine,
+  getJsObjToContract    : getJsObjToContract,
+  invokeMehtodOnContract  : invokeMehtodOnContract
 }
 
 
