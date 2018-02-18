@@ -1,0 +1,18 @@
+###inside etherume console####
+
+debug.verbosity(0);
+debug.verbosity(4);
+
+miner.stop()
+
+
+//load js scripts
+loadScript('./scripts/mine-only-when-transactions.js')
+loadScript('./scripts/api.js')
+
+
+
+### on commandline shell ###
+
+//connect remix ide to our filesystem
+remixd -s contracts\

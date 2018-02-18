@@ -1,0 +1,5 @@
+1. failed to init contract on the blockchain:
+  --> maybe a gas is not enough, check the gas of the latest block by
+     eth.getBlock("latest")
+
+     
